@@ -20,28 +20,28 @@ class TrieDictionary : public IDictionary
     void insert(const std::string& w);
     void erase(const std::string& w);
 
-    class Trie;
-
-  private:
-    Trie root;
-}
-
-//Trie class implementation
-class TrieDictionary::Trie
-{
-  public:
-    Trie();
-    Trie(const char& key);
-    ~Trie();
+    //Trie class implementation
+  class Trie
+  {
+    public:
+      Trie();
+      Trie(const char& key);
+      ~Trie();
     
-    bool exists(const std::string& w);
+      bool exists(const std::string& w);
 
-    result_t search(const std::string& w);
-    void insert(const std::string& w);
-    void erase(const std::string& w);
+      result_t search(const std::string& w);
+      void insert(const std::string& w);
+      void erase(const std::string& w);
+
+    private:
+      int num_children_;
+      const std::string& word_;
+      Trie* parent_;
+      std::vector<*Trie> children_;
+      bool eow_;
+  };
 
   private:
-    char key_;
-    std::vector<Trie> children_;
-    bool eow_;
-}
+    Trie *root;
+};
