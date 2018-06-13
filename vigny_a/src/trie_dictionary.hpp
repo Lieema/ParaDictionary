@@ -25,7 +25,6 @@ class TrieDictionary : public IDictionary
   {
     public:
       Trie();
-      Trie(const char& key);
       ~Trie();
     
       bool exists(const std::string& w);
@@ -39,9 +38,9 @@ class TrieDictionary : public IDictionary
 
     private:
       int num_children_;
-      const std::string& word_;
+      std::string word_;
       Trie* parent_;
-      std::vector<*Trie> children_;
+      std::vector<Trie*> children_;
       bool eow_;
   };
 

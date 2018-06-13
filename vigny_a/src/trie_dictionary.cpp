@@ -1,26 +1,82 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <iostream>
 
 #include "IDictionary.hpp"
 #include "trie_dictionary.hpp"
 
 TrieDictionary::Trie::Trie() :
-    key_('\0'), children_(std::vector<Trie>(),
-    eow_(false))
+    num_children_(0),
+    word_(""),
+    parent_(nullptr),
+    children_(std::vector<TrieDictionary::Trie*>(26, nullptr)),
+    eow_(false)
 {}
 
-TrieDictionary::Trie::Trie(const char& key) :
-    key_(key), children_(std::vector<Trie>(),
-    eow_(false))
+TrieDictionary::Trie::~Trie()
 {}
 
 bool TrieDictionary::Trie::exists(const std::string& w)
 {
-  Trie t = *this;
+  TrieDictionary::Trie* t = this;
+
   for (int i = 0; i < w.size(); ++i)
   {
-    for (auto 
+    if (t->children_[w[i] - 97] == nullptr)
+      return false;
+    t = t->children_[w[i] - 97];
+  }
+  return t->eow_;
+}
+
+void TrieDictionary::Trie::insert(const std::string& w)
+{
+  TrieDictionary::Trie* t = this;
+  std::string word = "";
+
+  for (int i = 0; i < w.size(); ++i)
+  {
+    word.push_back(w[i]);
+    if (t->children_[w[i] - 97] == nullptr)
+    {
+      t->children_[w[i] - 97] = new TrieDictionary::Trie();
+      t->num_children_ += 1;
+      t->children_[w[i] - 97]->word_ = word;
+      t->children_[w[i] - 97]->parent_ = t;
+    }
+    t = t->children_[w[i] - 97];
+  }
+  t->eow_ = true;
+}
+
+void TrieDictionary::Trie::erase(const std::string& w)
+{
+  TrieDictionary::Trie* t = this;
+  TrieDictionary::Trie* last_word = nullptr;
+  char c;
+
+  for (int i = 0; i < w.size(); ++i)
+  {
+    if (t->children_[w[i] - 97] == nullptr)
+      return;
+    t = t->children_[w[i] - 97];
+  }
+
+  t->eow_ = false;
+
+  if (t->num_children_ == 0)
+  {
+    while (!t->eow_ && t->parent_ != nullptr)
+    {
+      std::cout << t->word_ << std::endl;
+      last_word = t->parent_;
+      delete t;
+      t = last_word;
+      c = t->word_.back();
+    }
+    t->num_children_ -= 1;
+    t->children_[c - 97] = nullptr;
   }
 }
 
