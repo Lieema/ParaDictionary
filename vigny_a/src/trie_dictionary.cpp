@@ -23,3 +23,37 @@ bool TrieDictionary::Trie::exists(const std::string& w)
     for (auto 
   }
 }
+
+
+result_t TrieDictionary::Trie::search(const std::string& w)
+{
+  std::vector<int> currentRow( w.length() + 1);
+  std::iota(std::begin(currentRow), std::end(currentRow), 0);
+  results_t current_min;
+  for (auto a : children_)
+  	searchRecursive(a, a.key_, w, currentRow, current_min)
+  return current_min;
+}
+
+
+void TrieDictionary::Trie::searchRecursive(Trie node, char letter
+	, const std::string& word, std::vector<int> previous, results_t min)
+{
+  int columns = word.length() + 1;
+  std::vector<int> currentRow(1);
+  currentRow.push_back(previous[0] + 1);
+  for (int column = 1; column < columns; ++column)) 
+  {
+     int insertCost = currenRow[column - 1] + 1;
+     int deleteCost = previous[column] + 1;
+     int replaceCost;
+     if (word[column - 1] != letter)
+	     replaceCost = previous[column - 1] + 1;
+     else
+	     replaceCost = previous[column - 1];
+     currentRow.push_back(std::min(std::min(inserCost, deleteCost), replaceCost));
+  }
+
+  if (currentRow.back < std::get<1>(min))
+	  min = (, currentRow.back);
+}
