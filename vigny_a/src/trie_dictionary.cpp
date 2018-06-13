@@ -29,15 +29,15 @@ result_t TrieDictionary::Trie::search(const std::string& w)
 {
   std::vector<int> currentRow( w.length() + 1);
   std::iota(std::begin(currentRow), std::end(currentRow), 0);
-  results_t current_min;
-  for (auto a : children_)
-  	searchRecursive(a, a.key_, w, currentRow, current_min)
+  result_t current_min;
+  for (auto node : children_)
+  	searchRecursive(node, node.word_.back, w, currentRow, &current_min)
   return current_min;
 }
 
 
 void TrieDictionary::Trie::searchRecursive(Trie node, char letter
-	, const std::string& word, std::vector<int> previous, results_t min)
+	, const std::string& word, std::vector<int> previous, result_t& min)
 {
   int columns = word.length() + 1;
   std::vector<int> currentRow(1);
@@ -55,5 +55,9 @@ void TrieDictionary::Trie::searchRecursive(Trie node, char letter
   }
 
   if (currentRow.back < std::get<1>(min))
-	  min = (, currentRow.back);
+	  min = std::make_pair(node.word_, currentRow.back);
+
+  for (auto children : node.children_)
+	  searchRecursive(children, children.word_.back, word, currentRow, min);
+  
 }
