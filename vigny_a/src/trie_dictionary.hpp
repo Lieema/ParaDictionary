@@ -30,7 +30,7 @@ class TrieDictionary : public IDictionary
       bool exists(const std::string& w);
 
       result_t search(const std::string& w);
-      void searchRecursive(Trie node, char letter
+      void searchRecursive(Trie* node, char letter
 		      , const std::string& word, std::vector<int> previous
 		      ,result_t& min);
       void insert(const std::string& w);
