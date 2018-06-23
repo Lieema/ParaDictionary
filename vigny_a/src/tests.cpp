@@ -16,10 +16,10 @@ TEST(Dictionary, TrieBasic)
 {
   TrieDictionary dic = { "massue", "lamasse", "massive"};
 
-  //ASSERT_EQ(dic.search("massive"), std::make_pair("massive"s, 0));
-  //ASSERT_EQ(dic.search("lessive"), std::make_pair("massive"s, 2));
-  //ASSERT_EQ(dic.search("limace"), std::make_pair("lamasse"s, 3));
-  //ASSERT_EQ(dic.search("masseur"), std::make_pair("massue"s, 2));
+  ASSERT_EQ(dic.search("massive"), std::make_pair("massive"s, 0));
+  ASSERT_EQ(dic.search("lessive"), std::make_pair("massive"s, 2));
+  ASSERT_EQ(dic.search("limace"), std::make_pair("lamasse"s, 3));
+  ASSERT_EQ(dic.search("masseur"), std::make_pair("massue"s, 2));
 
   ASSERT_EQ(dic.exists("massue"), true);
   ASSERT_EQ(dic.exists("lamasse"), true);
@@ -29,10 +29,10 @@ TEST(Dictionary, TrieBasic)
   ASSERT_EQ(dic.exists("mass"), false);
 
   dic.insert("masseur");
-  //ASSERT_EQ(dic.search("masseur"), std::make_pair("masseur"s, 0));
+  ASSERT_EQ(dic.search("masseur"), std::make_pair("masseur"s, 0));
 
   dic.erase("masseur");
-  //ASSERT_EQ(dic.search("masseur"), std::make_pair("massue"s, 2));
+  ASSERT_EQ(dic.search("masseur"), std::make_pair("massue"s, 2));
 }
 
 // A basic add/remove/search test

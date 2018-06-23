@@ -84,12 +84,13 @@ void TrieDictionary::Trie::erase(const std::string& w)
 
 
 void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
-	, const std::string& word, std::vector<int> previous, result_t& min)
+	, const std::string& word, std::vector<int> previous
+	, result_t& min, result_t curr)
 {
   int columns = word.length() + 1;
   std::vector<int> currentRow(1);
   currentRow.push_back(previous[0] + 1);
-  std::cout << "hello there!" << std::endl;
+
   for (int column = 1; column < columns; ++column)
   {
      int insertCost = currentRow[column - 1] + 1;
@@ -101,13 +102,13 @@ void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
 	     replaceCost = previous[column - 1];
      currentRow.push_back(std::min(std::min(insertCost, deleteCost), replaceCost));
   }
-  std::cout << "GENERAL KENOBI!" << std::endl;
-  if (currentRow.back() < min.second)
-	  min = std::make_pair(node->word_, currentRow.back());
-  std::cout << "I don't think so!" << std::endl;
+  
+  curr = std::make_pair(node->word_ , currentRow.back());
+  if (curr.second < min.second && node->eow_)
+	  min = curr;
   for (auto children : node->children_)
-	  searchRecursive(children, children->word_.back(), word, currentRow, min);
-  std::cout << "DOOKU" << std::endl;
+	  if (children)
+	  	searchRecursive(children, children->word_.back(), word, currentRow, min, curr);
 }
 
 
@@ -116,8 +117,14 @@ result_t TrieDictionary::Trie::search(const std::string& w)
   std::vector<int> currentRow( w.length() + 1);
   std::iota(std::begin(currentRow), std::end(currentRow), 0);
   result_t current_min = std::make_pair(w, INT_MAX);
+  result_t curr = std::make_pair(w, 0);
+  if (exists(w))
+	  return std::make_pair(w, 0);
   for (auto node : this->children_)
-  	searchRecursive(node, node->word_.back(), w, currentRow, current_min);
+  {  
+     if (node)
+     	searchRecursive(node, node->word_.back(), w, currentRow, current_min, curr);
+  } 
   return current_min;
 }
 

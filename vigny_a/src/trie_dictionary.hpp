@@ -34,7 +34,7 @@ class TrieDictionary : public IDictionary
       result_t search(const std::string& w);
       void searchRecursive(Trie* node, char letter
 		      , const std::string& word, std::vector<int> previous
-		      ,result_t& min);
+		      ,result_t& min ,result_t curr);
       void insert(const std::string& w);
       void erase(const std::string& w);
 
