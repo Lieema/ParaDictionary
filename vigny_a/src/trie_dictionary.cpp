@@ -23,7 +23,7 @@ bool TrieDictionary::Trie::exists(const std::string& w)
 {
   TrieDictionary::Trie* t = this;
 
-  for (size_t i = 0; i < w.size(); ++i)
+  for (int i = 0; i < w.size(); ++i)
   {
     if (t->children_[w[i] - 97] == nullptr)
       return false;
@@ -37,7 +37,7 @@ void TrieDictionary::Trie::insert(const std::string& w)
   TrieDictionary::Trie* t = this;
   std::string word = "";
 
-  for (size_t i = 0; i < w.size(); ++i)
+  for (int i = 0; i < w.size(); ++i)
   {
     word.push_back(w[i]);
     if (t->children_[w[i] - 97] == nullptr)
@@ -58,7 +58,7 @@ void TrieDictionary::Trie::erase(const std::string& w)
   TrieDictionary::Trie* last_word = nullptr;
   char c;
 
-  for (size_t i = 0; i < w.size(); ++i)
+  for (int i = 0; i < w.size(); ++i)
   {
     if (t->children_[w[i] - 97] == nullptr)
       return;
@@ -89,6 +89,7 @@ void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
   int columns = word.length() + 1;
   std::vector<int> currentRow(1);
   currentRow.push_back(previous[0] + 1);
+  std::cout << "hello there!" << std::endl;
   for (int column = 1; column < columns; ++column)
   {
      int insertCost = currentRow[column - 1] + 1;
@@ -100,13 +101,13 @@ void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
 	     replaceCost = previous[column - 1];
      currentRow.push_back(std::min(std::min(insertCost, deleteCost), replaceCost));
   }
-
+  std::cout << "GENERAL KENOBI!" << std::endl;
   if (currentRow.back() < min.second)
 	  min = std::make_pair(node->word_, currentRow.back());
-
+  std::cout << "I don't think so!" << std::endl;
   for (auto children : node->children_)
 	  searchRecursive(children, children->word_.back(), word, currentRow, min);
-  
+  std::cout << "DOOKU" << std::endl;
 }
 
 
