@@ -93,11 +93,13 @@ void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
   int columns = word.length() + 1;
   std::vector<int> currentRow(0);
   currentRow.push_back(previous[0] + 1);
+  int insertCost = 0;
+  int deleteCost = 0;
+  int replaceCost = 0;
   for (int column = 1; column < columns; ++column)
   {
-     int insertCost = currentRow[column - 1] + 1;
-     int deleteCost = previous[column] + 1;
-     int replaceCost;
+     insertCost = currentRow[column - 1] + 1;
+     deleteCost = previous[column] + 1;
      if (word[column - 1] != letter)
 	     replaceCost = previous[column - 1] + 1;
      else
@@ -107,9 +109,10 @@ void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
   curr = std::make_pair(node->word_ , currentRow.back());
   if (curr.second < min.second && node->eow_)
 	  min = curr;
-  for (auto c : node->num_children_)
-	  searchRecursive(node->children_[c - 97],
-        node->children_[c - 97]->word_.back(), word, currentRow, min, curr);
+  if (*std::min_element(currentRow.begin(), currentRow.end()) < min.second)
+    for (auto c : node->num_children_)
+	    searchRecursive(node->children_[c - 97],
+          node->children_[c - 97]->word_.back(), word, currentRow, min, curr);
 }
 
 
@@ -125,30 +128,6 @@ result_t TrieDictionary::Trie::search(const std::string& w)
     searchRecursive(children_[c - 97],
         children_[c - 97]->word_.back(), w, currentRow, current_min, curr);
   return current_min;
-  /*
-  std::string best;
-  int distance = INT_MAX;
-  std::queue<TrieDictionary::Trie*> q;
-  q.push(this);
-  while (!q.empty())
-  {
-    auto t = q.front();
-    q.pop();
-
-    if (t->eow_)
-    {
-      int d = levenshtein(w, t->word_);
-      if (d < distance)
-      {
-        best = t->word_;
-        distance = d;
-      }
-    }
-
-    for (auto c : t->num_children_)
-      q.push(t->children_[c - 97]);
-  }
-  return {best, distance};*/
 }
 
 TrieDictionary::TrieDictionary() :
