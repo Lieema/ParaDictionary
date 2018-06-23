@@ -120,10 +120,15 @@ result_t TrieDictionary::Trie::search(const std::string& w)
   return current_min;
 }
 
-
 TrieDictionary::TrieDictionary() :
   root(new Trie())
 {}
+
+TrieDictionary::TrieDictionary(const std::initializer_list<std::string>& init) :
+  root(new Trie())
+{
+  this->init(init);
+}
 
 TrieDictionary::~TrieDictionary()
 {

@@ -11,6 +11,7 @@ class TrieDictionary : public IDictionary
 {
   public:
     TrieDictionary();
+    TrieDictionary(const std::initializer_list<std::string>& init);
     ~TrieDictionary();
     //returns true if w is in the dictionary
     bool exists(const std::string& w);
