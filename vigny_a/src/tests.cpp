@@ -39,7 +39,7 @@ TEST(Dictionary, TrieBasic)
 // A basic add/remove/search test
 TEST(Dictionary, Basic)
 {
-  TrieDictionary dic = { "massue", "lamasse", "massive"};
+  naive_dictionary dic = { "massue", "lamasse", "massive"};
 
   ASSERT_EQ(dic.search("massive"), std::make_pair("massive"s, 0));
   ASSERT_EQ(dic.search("lessive"), std::make_pair("massive"s, 2));
@@ -110,7 +110,7 @@ TEST(Dictionary, AsyncConsistency)
 
   Scenario scn(word_list, 512);
 
-  TrieDictionary dic;
+  naive_dictionary dic;
   naive_async_dictionary async_dic;
   scn.prepare(dic);
   scn.prepare(async_dic);

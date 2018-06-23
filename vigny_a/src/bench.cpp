@@ -2,10 +2,11 @@
 #include "tools.hpp"
 #include "naive_dictionary.hpp"
 #include "naive_async_dictionary.hpp"
+#include "trie_dictionary.hpp"
 
 #include <benchmark/benchmark.h>
 
-constexpr int NQUERIES = 10000;
+constexpr int NQUERIES = 100;
 
 class BMScenario : public ::benchmark::Fixture
 {
@@ -49,7 +50,20 @@ BENCHMARK_DEFINE_F(BMScenario, Naive_Async)(benchmark::State& st)
   st.SetItemsProcessed(st.iterations() * NQUERIES);
 }
 
+BENCHMARK_DEFINE_F(BMScenario, Trie_NoAsync)(benchmark::State& st)
+{
+  TrieDictionary dic;
+  m_scenario->prepare(dic);
+
+  for (auto _ : st)
+    m_scenario->execute(dic);
+
+  st.SetItemsProcessed(st.iterations() * NQUERIES);
+
+}
+
 BENCHMARK_REGISTER_F(BMScenario, Naive_NoAsync)->Unit(benchmark::kMillisecond);
 BENCHMARK_REGISTER_F(BMScenario, Naive_Async)->Unit(benchmark::kMillisecond);
+BENCHMARK_REGISTER_F(BMScenario, Trie_NoAsync)->Unit(benchmark::kMillisecond);
 
 BENCHMARK_MAIN();

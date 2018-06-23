@@ -39,10 +39,10 @@ class TrieDictionary : public IDictionary
       void erase(const std::string& w);
 
     private:
-      int num_children_;
       std::string word_;
       Trie* parent_;
       std::vector<Trie*> children_;
+      std::vector<char> num_children_;
       bool eow_;
   };
 

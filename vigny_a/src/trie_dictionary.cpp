@@ -2,17 +2,20 @@
 #include <vector>
 #include <utility>
 #include <iostream>
+#include <algorithm>
+#include <queue>
 #include <numeric>
 #include <climits>
 
 #include "IDictionary.hpp"
 #include "trie_dictionary.hpp"
+#include "tools.hpp"
 
 TrieDictionary::Trie::Trie() :
-    num_children_(0),
     word_(""),
     parent_(nullptr),
     children_(std::vector<TrieDictionary::Trie*>(26, nullptr)),
+    num_children_(std::vector<char>()),
     eow_(false)
 {}
 
@@ -23,7 +26,7 @@ bool TrieDictionary::Trie::exists(const std::string& w)
 {
   TrieDictionary::Trie* t = this;
 
-  for (int i = 0; i < w.size(); ++i)
+  for (size_t i = 0; i < w.size(); ++i)
   {
     if (t->children_[w[i] - 97] == nullptr)
       return false;
@@ -37,13 +40,13 @@ void TrieDictionary::Trie::insert(const std::string& w)
   TrieDictionary::Trie* t = this;
   std::string word = "";
 
-  for (int i = 0; i < w.size(); ++i)
+  for (size_t i = 0; i < w.size(); ++i)
   {
     word.push_back(w[i]);
     if (t->children_[w[i] - 97] == nullptr)
     {
       t->children_[w[i] - 97] = new TrieDictionary::Trie();
-      t->num_children_ += 1;
+      t->num_children_.push_back(w[i]);
       t->children_[w[i] - 97]->word_ = word;
       t->children_[w[i] - 97]->parent_ = t;
     }
@@ -58,7 +61,7 @@ void TrieDictionary::Trie::erase(const std::string& w)
   TrieDictionary::Trie* last_word = nullptr;
   char c = ' ';
 
-  for (int i = 0; i < w.size(); ++i)
+  for (size_t i = 0; i < w.size(); ++i)
   {
     if (t->children_[w[i] - 97] == nullptr)
       return;
@@ -67,15 +70,16 @@ void TrieDictionary::Trie::erase(const std::string& w)
 
   t->eow_ = false;
 
-  if (t->num_children_ == 0)
+  if (t->num_children_.size() == 0)
   {
-    while (!t->eow_ && t->parent_ != nullptr && t->num_children_ == 0)
+    while (!t->eow_ && t->parent_ != nullptr && t->num_children_.size() == 0)
     {
       last_word = t->parent_;
       c = t->word_.back();
       delete t;
       t = last_word;
-      t->num_children_ -= 1;
+      t->num_children_.erase(std::remove(t->num_children_.begin(),
+            t->num_children_.end(), c), t->num_children_.end());
     }
     t->children_[c - 97] = nullptr;
   }
@@ -101,12 +105,11 @@ void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
      currentRow.push_back(std::min(std::min(insertCost, deleteCost), replaceCost));  
   }
   curr = std::make_pair(node->word_ , currentRow.back());
-  //std::cout << curr.first << " " << curr.second << std::endl;
   if (curr.second < min.second && node->eow_)
 	  min = curr;
-  for (auto children : node->children_)
-	  if (children)
-	  	searchRecursive(children, children->word_.back(), word, currentRow, min, curr);
+  for (auto c : node->num_children_)
+	  searchRecursive(node->children_[c - 97],
+        node->children_[c - 97]->word_.back(), word, currentRow, min, curr);
 }
 
 
@@ -118,12 +121,34 @@ result_t TrieDictionary::Trie::search(const std::string& w)
   result_t curr = std::make_pair(w, 0);
   if (exists(w))
 	  return std::make_pair(w, 0);
-  for (auto node : this->children_)
-  {  
-     if (node)
-     	searchRecursive(node, node->word_.back(), w, currentRow, current_min, curr);
-  } 
+  for (auto c : this->num_children_)
+    searchRecursive(children_[c - 97],
+        children_[c - 97]->word_.back(), w, currentRow, current_min, curr);
   return current_min;
+  /*
+  std::string best;
+  int distance = INT_MAX;
+  std::queue<TrieDictionary::Trie*> q;
+  q.push(this);
+  while (!q.empty())
+  {
+    auto t = q.front();
+    q.pop();
+
+    if (t->eow_)
+    {
+      int d = levenshtein(w, t->word_);
+      if (d < distance)
+      {
+        best = t->word_;
+        distance = d;
+      }
+    }
+
+    for (auto c : t->num_children_)
+      q.push(t->children_[c - 97]);
+  }
+  return {best, distance};*/
 }
 
 TrieDictionary::TrieDictionary() :
