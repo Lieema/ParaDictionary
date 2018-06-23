@@ -122,7 +122,7 @@ result_t TrieDictionary::Trie::search(const std::string& w)
 
 
 TrieDictionary::TrieDictionary() :
-  root(new TrieDictionary())
+  root(new Trie())
 {}
 
 TrieDictionary::~TrieDictionary()
@@ -141,7 +141,7 @@ void TrieDictionary::init(const std::vector<std::string>& word_list)
     root->insert(w);
 }
 
-result_t TrieDictionary::search(const std::string& w)
+result_t TrieDictionary::search(const std::string& w) const
 {
   return root->search(w);
 }
