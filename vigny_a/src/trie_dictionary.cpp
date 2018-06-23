@@ -98,7 +98,7 @@ void TrieDictionary::Trie::searchRecursive(Trie node, char letter
   int columns = word.length() + 1;
   std::vector<int> currentRow(1);
   currentRow.push_back(previous[0] + 1);
-  for (int column = 1; column < columns; ++column)) 
+  for (int column = 1; column < columns; ++column)
   {
      int insertCost = currenRow[column - 1] + 1;
      int deleteCost = previous[column] + 1;
@@ -116,4 +116,39 @@ void TrieDictionary::Trie::searchRecursive(Trie node, char letter
   for (auto children : node.children_)
 	  searchRecursive(children, children.word_.back, word, currentRow, min);
   
+}
+
+TrieDictionary::TrieDictionary() :
+  root(new TrieDictionary())
+{}
+
+TrieDictionary::~TrieDictionary()
+{
+  delete root;
+}
+
+bool TrieDictionary::exists(const std::string& w)
+{
+  return root->exists(w);
+}
+
+void TrieDictionary::init(const std::vector<std::string>& word_list)
+{
+  for (auto w : word_list)
+    root->insert(w);
+}
+
+result_t TrieDictionary::search(const std::string& w)
+{
+  return root->search(w);
+}
+
+void TrieDictionary::insert(const std::string& w)
+{
+  root->insert(w);
+}
+
+void TrieDictionary::erase(const std::string& w)
+{
+  root->erase(w);
 }
