@@ -69,15 +69,15 @@ void TrieDictionary::Trie::erase(const std::string& w)
 
   if (t->num_children_ == 0)
   {
-    while (!t->eow_ && t->parent_ != nullptr)
+    while (!t->eow_ && t->parent_ != nullptr && t->num_children_ == 0)
     {
       std::cout << t->word_ << std::endl;
       last_word = t->parent_;
+      c = t->word_.back();
       delete t;
       t = last_word;
-      c = t->word_.back();
+      t->num_children_ -= 1;
     }
-    t->num_children_ -= 1;
     t->children_[c - 97] = nullptr;
   }
 }
