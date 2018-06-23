@@ -1,0 +1,1 @@
+/usr/bin/c++  -W -Wall   CMakeFiles/tests.dir/src/tests.cpp.o  -o tests libdictionary.a /usr/local/lib/libgtest.a /usr/local/lib/libgtest_main.a /usr/local/lib/libgtest.a -lpthread 

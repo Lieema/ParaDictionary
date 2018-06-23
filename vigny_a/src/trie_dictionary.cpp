@@ -86,11 +86,10 @@ void TrieDictionary::Trie::erase(const std::string& w)
 void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
 	, const std::string& word, std::vector<int> previous
 	, result_t& min, result_t curr)
-{
+{ 
   int columns = word.length() + 1;
-  std::vector<int> currentRow(1);
+  std::vector<int> currentRow(0);
   currentRow.push_back(previous[0] + 1);
-
   for (int column = 1; column < columns; ++column)
   {
      int insertCost = currentRow[column - 1] + 1;
@@ -100,10 +99,10 @@ void TrieDictionary::Trie::searchRecursive(Trie* node, char letter
 	     replaceCost = previous[column - 1] + 1;
      else
 	     replaceCost = previous[column - 1];
-     currentRow.push_back(std::min(std::min(insertCost, deleteCost), replaceCost));
+     currentRow.push_back(std::min(std::min(insertCost, deleteCost), replaceCost));  
   }
-  
   curr = std::make_pair(node->word_ , currentRow.back());
+  //std::cout << curr.first << " " << curr.second << std::endl;
   if (curr.second < min.second && node->eow_)
 	  min = curr;
   for (auto children : node->children_)

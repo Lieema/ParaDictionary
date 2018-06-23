@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdictionary.a  CMakeFiles/dictionary.dir/src/naive_dictionary.cpp.o CMakeFiles/dictionary.dir/src/naive_async_dictionary.cpp.o CMakeFiles/dictionary.dir/src/trie_dictionary.cpp.o CMakeFiles/dictionary.dir/src/tools.cpp.o
+/usr/bin/ranlib libdictionary.a

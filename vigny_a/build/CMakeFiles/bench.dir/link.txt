@@ -1,0 +1,1 @@
+/usr/bin/c++  -W -Wall   CMakeFiles/bench.dir/src/bench.cpp.o  -o bench libdictionary.a /usr/local/lib/libbenchmark.a -lpthread /usr/lib/x86_64-linux-gnu/librt.so 

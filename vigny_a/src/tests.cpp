@@ -32,6 +32,7 @@ TEST(Dictionary, TrieBasic)
   ASSERT_EQ(dic.search("masseur"), std::make_pair("masseur"s, 0));
 
   dic.erase("masseur");
+  ASSERT_EQ(dic.exists("masseur"), false);
   ASSERT_EQ(dic.search("masseur"), std::make_pair("massue"s, 2));
 }
 
