@@ -20,11 +20,13 @@ add_library(dictionary
   src/naive_dictionary.hpp
   src/naive_async_dictionary.hpp
   src/trie_dictionary.hpp
+  src/async_trie_dictionary.hpp
   src/tools.hpp
 
   src/naive_dictionary.cpp
   src/naive_async_dictionary.cpp
   src/trie_dictionary.cpp
+  src/async_trie_dictionary.cpp
   src/tools.cpp
   )
 
