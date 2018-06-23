@@ -4,6 +4,7 @@
 #include "tools.hpp"
 #include "naive_dictionary.hpp"
 #include "naive_async_dictionary.hpp"
+#include "trie_dictionary.hpp"
 
 using namespace std::string_literals;
 
@@ -94,4 +95,19 @@ TEST(Dictionary, AsyncConsistency)
   ASSERT_EQ(r1, r2);
 }
 
+TEST(Dictionary, TrieBasic)
+{
+  TrieDictionary dic = { "massue", "lamasse", "massive"};
+
+  ASSERT_EQ(dic.search("massive"), std::make_pair("massive"s, 0));
+  ASSERT_EQ(dic.search("lessive"), std::make_pair("massive"s, 2));
+  ASSERT_EQ(dic.search("limace"), std::make_pair("lamasse"s, 3));
+  ASSERT_EQ(dic.search("masseur"), std::make_pair("massue"s, 2));
+
+  dic.insert("masseur");
+  ASSERT_EQ(dic.search("masseur"), std::make_pair("masseur"s, 0));
+
+  dic.erase("masseur");
+  ASSERT_EQ(dic.search("masseur"), std::make_pair("massue"s, 2));
+}
 
