@@ -23,7 +23,7 @@ bool TrieDictionary::Trie::exists(const std::string& w)
 {
   TrieDictionary::Trie* t = this;
 
-  for (int i = 0; i < w.size(); ++i)
+  for (size_t i = 0; i < w.size(); ++i)
   {
     if (t->children_[w[i] - 97] == nullptr)
       return false;
@@ -37,7 +37,7 @@ void TrieDictionary::Trie::insert(const std::string& w)
   TrieDictionary::Trie* t = this;
   std::string word = "";
 
-  for (int i = 0; i < w.size(); ++i)
+  for (size_t i = 0; i < w.size(); ++i)
   {
     word.push_back(w[i]);
     if (t->children_[w[i] - 97] == nullptr)
@@ -58,7 +58,7 @@ void TrieDictionary::Trie::erase(const std::string& w)
   TrieDictionary::Trie* last_word = nullptr;
   char c;
 
-  for (int i = 0; i < w.size(); ++i)
+  for (size_t i = 0; i < w.size(); ++i)
   {
     if (t->children_[w[i] - 97] == nullptr)
       return;
