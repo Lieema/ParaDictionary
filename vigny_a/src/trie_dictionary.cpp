@@ -56,7 +56,7 @@ void TrieDictionary::Trie::erase(const std::string& w)
 {
   TrieDictionary::Trie* t = this;
   TrieDictionary::Trie* last_word = nullptr;
-  char c;
+  char c = ' ';
 
   for (size_t i = 0; i < w.size(); ++i)
   {
