@@ -39,7 +39,7 @@ TEST(Dictionary, TrieBasic)
 // A basic add/remove/search test
 TEST(Dictionary, Basic)
 {
-  naive_dictionary dic = { "massue", "lamasse", "massive"};
+  TrieDictionary dic = { "massue", "lamasse", "massive"};
 
   ASSERT_EQ(dic.search("massive"), std::make_pair("massive"s, 0));
   ASSERT_EQ(dic.search("lessive"), std::make_pair("massive"s, 2));
@@ -68,7 +68,8 @@ TEST(Dictionary, ConcurrentOperations)
   // 2 threads Remove B
   // 2 threads Insert C
 
-  naive_dictionary dic(data.begin(), data.begin() + 4 * n);
+  TrieDictionary dic;
+  dic.init(data);
 
   std::thread t[6];
 
@@ -94,7 +95,7 @@ TEST(Dictionary, SimpleScenario)
 
   Scenario scn(word_list, 20);
 
-  naive_dictionary dic;
+  TrieDictionary dic;
   scn.prepare(dic);
   scn.execute_verbose(dic);
 }
@@ -109,7 +110,7 @@ TEST(Dictionary, AsyncConsistency)
 
   Scenario scn(word_list, 512);
 
-  naive_dictionary dic;
+  TrieDictionary dic;
   naive_async_dictionary async_dic;
   scn.prepare(dic);
   scn.prepare(async_dic);
