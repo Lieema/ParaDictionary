@@ -8,7 +8,7 @@
 #include <benchmark/benchmark.h>
 
 constexpr int NQUERIES = 100;
-constexpr int TRIE_NQUERIES = 1000;
+constexpr int TRIE_NQUERIES = 100;
 
 class BMScenario : public ::benchmark::Fixture
 {

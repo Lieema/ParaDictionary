@@ -21,4 +21,5 @@ class AsyncTrieDictionary : public IAsyncDictionary
   private:
     mutable std::mutex mutex_;
     TrieDictionary trie_;
+    mutable bool is_search;
 };
